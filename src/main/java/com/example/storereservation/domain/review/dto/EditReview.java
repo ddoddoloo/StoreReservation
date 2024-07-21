@@ -11,7 +11,7 @@ public class EditReview {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Request{
+    public static class Request {
         private double rating;
         private String text;
     }
@@ -20,13 +20,13 @@ public class EditReview {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String storeName;
         private String userId;
         private double rating;
         private String text;
 
-        public static Response fromDto(ReviewDto review){
+        public static Response fromDto(ReviewDto review) {
             return Response.builder()
                     .storeName(review.getStoreName())
                     .userId(review.getUserId())
