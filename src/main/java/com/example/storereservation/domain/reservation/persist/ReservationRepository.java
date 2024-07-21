@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<ReservationEntity, Long> {
+
     Page<ReservationEntity> findByUserIdOrderByTimeDesc(String userId, Pageable pageable);
 
     Page<ReservationEntity> findByUserIdAndStatusOrderByTime(String userId, ReservationStatus status, Pageable pageable);

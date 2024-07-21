@@ -13,23 +13,18 @@ import java.time.LocalDateTime;
 @Builder
 public class ReservationDto {
     private Long id;
-
     private String userId;
     private String phone;
-
     private String partnerId;
     private String storeName;
-
     private Integer people;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
     private LocalDateTime statusUpdatedAt;
-
-
     private LocalDateTime time;
 
-    public static ReservationDto fromEntity(ReservationEntity reservationEntity){
+    public static ReservationDto fromEntity(ReservationEntity reservationEntity) {
         return ReservationDto.builder()
                 .id(reservationEntity.getId())
                 .userId(reservationEntity.getUserId())
