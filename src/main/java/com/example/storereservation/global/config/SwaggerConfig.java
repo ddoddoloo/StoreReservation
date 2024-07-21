@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig {
 
     @Bean
-    public Docket storeReservationService(){
+    public Docket storeReservationService() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
@@ -24,10 +24,10 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiInfo apiInfo(){
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Store Reservation Service")
-                .description("설명")
+                .title("Store Reservation Service API")
+                .description("This is the API documentation for the Store Reservation Service.")
                 .version("1.0.0")
                 .build();
     }
