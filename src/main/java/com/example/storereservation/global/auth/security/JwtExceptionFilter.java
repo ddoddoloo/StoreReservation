@@ -21,26 +21,32 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Component
 public class JwtExceptionFilter extends OncePerRequestFilter {
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
-            filterChain.doFilter(request,response);
-        }catch (JwtException e) {
-            String message = e.getMessage();
-            if (message.equals(ErrorCode.JWT_TOKEN_WRONG_TYPE.getDescription())) {
-                setResponse(response, ErrorCode.JWT_TOKEN_WRONG_TYPE);
-            } else if (message.equals(ErrorCode.TOKEN_TIME_OUT.getDescription())) {
-                setResponse(response, ErrorCode.TOKEN_TIME_OUT);
-            }
+        try {
+            filterChain.doFilter(request, response);
+        } catch (JwtException e) {
+            log.error("JWT Exception: {}", e.getMessage());
+            handleJwtException(response, e);
         }
     }
-    private void setResponse(HttpServletResponse response, ErrorCode errorCode) throws RuntimeException, IOException {
+
+    private void handleJwtException(HttpServletResponse response, JwtException e) throws IOException {
+        String message = e.getMessage();
+        if (message.equals(ErrorCode.JWT_TOKEN_WRONG_TYPE.getDescription())) {
+            setResponse(response, ErrorCode.JWT_TOKEN_WRONG_TYPE);
+        } else if (message.equals(ErrorCode.TOKEN_TIME_OUT.getDescription())) {
+            setResponse(response, ErrorCode.TOKEN_TIME_OUT);
+        }
+    }
+
+    private void setResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
         ObjectMapper objectMapper = new JsonMapper();
         String responseJson = objectMapper.writeValueAsString(new ErrorResponse(errorCode));
 
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE+";charset=UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
         response.setStatus(errorCode.getStatusCode());
         response.getWriter().print(responseJson);
     }
-
 }
