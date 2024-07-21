@@ -10,45 +10,43 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Getter@Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity(name = "STORE")
 public class StoreEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String partnerId;
-
     private String storeName;
     private String storeAddr;
     private String text;
-
     private double lat;
     private double lnt;
-
     private double rating;
     private Long ratingCount;
-
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
-    public void edit(EditStore.Request request){
-        if(StringUtils.hasText(request.getStoreName())){
+    public void edit(EditStore.Request request) {
+        if (StringUtils.hasText(request.getStoreName())) {
             this.storeName = request.getStoreName();
         }
-        if(StringUtils.hasText(request.getStoreAddr())){
+        if (StringUtils.hasText(request.getStoreAddr())) {
             this.storeAddr = request.getStoreAddr();
         }
-        if(StringUtils.hasText(request.getText())){
+        if (StringUtils.hasText(request.getText())) {
             this.text = request.getText();
         }
-        if(request.getLat() != 0 && request.getLnt() != 0){
+        if (request.getLat() != 0 && request.getLnt() != 0) {
             this.lat = request.getLat();
             this.lnt = request.getLnt();
         }
         this.updateAt = LocalDateTime.now();
     }
-
 }
