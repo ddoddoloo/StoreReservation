@@ -8,7 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Getter@Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,7 +24,6 @@ public class ReviewEntity {
     private String storeName;
     private double rating;
     private String text;
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
