@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.Arrays;
 
-
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -31,12 +30,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final Environment environment;
     private final AuthenticationFilter authenticationFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
-
     private final MyAccessDeniedHandler myAccessDeniedHandler;
     private final MyAuthenticationEntryPoint myAuthenticationEntryPoint;
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -54,21 +52,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtExceptionFilter, AuthenticationFilter.class);
 
         // 개발용
-        if(Arrays.asList(environment.getActiveProfiles()).contains("dev")){
+        if (Arrays.asList(environment.getActiveProfiles()).contains("dev")) {
             http.authorizeRequests().antMatchers("/**").permitAll();
         }
-
     }
 
     @Override
-    public void configure(final WebSecurity webSecurity){
-        webSecurity.ignoring()
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
                 .antMatchers("/**/register", "/**/login", "/exception/**");
     }
 
     @Bean
     @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception{
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 }
