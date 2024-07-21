@@ -19,11 +19,10 @@ public class ReviewDto {
     private String storeName;
     private double rating;
     private String text;
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public static ReviewDto fromEntity(ReviewEntity reviewEntity){
+    public static ReviewDto fromEntity(ReviewEntity reviewEntity) {
         return ReviewDto.builder()
                 .id(reviewEntity.getId())
                 .reservationId(reviewEntity.getReservationId())

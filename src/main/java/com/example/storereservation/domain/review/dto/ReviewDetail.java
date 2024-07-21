@@ -15,7 +15,6 @@ public class ReviewDetail {
     private String userId;
     private String rating;
     private String text;
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
