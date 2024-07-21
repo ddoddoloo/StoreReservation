@@ -16,16 +16,13 @@ public class UserDto {
 
     private String userId;
     private String password;
-
     private String name;
     private String phone;
-
-    private String memberType; //ROLE_USER
-
+    private String memberType; // ROLE_USER
     private LocalDateTime createAt;
     private LocalDateTime updateDt;
 
-    public static UserDto fromEntity(UserEntity userEntity){
+    public static UserDto fromEntity(UserEntity userEntity) {
         return UserDto.builder()
                 .userId(userEntity.getUserId())
                 .password(userEntity.getPassword())

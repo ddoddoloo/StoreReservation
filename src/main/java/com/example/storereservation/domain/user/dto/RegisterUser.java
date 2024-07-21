@@ -9,26 +9,22 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
 public class RegisterUser {
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Request{
-        //입력받은 값
+    public static class Request {
+        // 입력받은 값
         private String userId;
-
         private String password;
         private String passwordCheck;
-
         private String name;
         private String phone;
+        private MemberType memberType; // ROLE_USER
 
-        private MemberType memberType;//ROLE_USER
-
-        public static UserEntity toEntity(Request request){
+        public static UserEntity toEntity(Request request) {
             return UserEntity.builder()
                     .userId(request.getUserId())
                     .password(request.getPassword())
@@ -44,17 +40,16 @@ public class RegisterUser {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
-        //입력받은 값
+    public static class Response {
+        // 입력받은 값
         private String userId;
-
         private String name;
         private String phone;
-        //서버 측 설정 값
+        // 서버 측 설정 값
         private LocalDateTime createAt;
         private String memberType;
 
-        public static Response fromDto(UserDto userDto){
+        public static Response fromDto(UserDto userDto) {
             return Response.builder()
                     .userId(userDto.getUserId())
                     .name(userDto.getName())
@@ -64,5 +59,4 @@ public class RegisterUser {
                     .build();
         }
     }
-
 }
