@@ -27,12 +27,13 @@ public class AuthController {
 
     /**
      * 유저 로그인
+     * @param input 로그인 요청 정보
+     * @return 로그인된 유저의 ID와 JWT 토큰
      */
     @ApiOperation(value = "유저 로그인", notes = "로그인 시 id와 JWT 토큰이 반환된다.")
     @PostMapping("/user/login")
-    public ResponseEntity<?> userLogin(@RequestBody LoginInput input) {
+    public ResponseEntity<AuthResponse> userLogin(@RequestBody LoginInput input) {
         UserEntity loginUser = authService.authenticateUser(input);
-
         String token = tokenProvider.generateToken(loginUser.getUsername(), new ArrayList<>(Collections.singletonList(loginUser.getMemberType())));
 
         log.info("[LOGIN] ID={}, ROLE={}", loginUser.getUserId(), loginUser.getMemberType());
@@ -41,19 +42,18 @@ public class AuthController {
     }
 
     /**
-     *  파트너 로그인
+     * 파트너 로그인
+     * @param input 로그인 요청 정보
+     * @return 로그인된 파트너의 ID와 JWT 토큰
      */
     @ApiOperation(value = "파트너 로그인", notes = "로그인 시 id와 JWT 토큰이 반환된다.")
     @PostMapping("/partner/login")
-    public ResponseEntity<?> partnerLogin(@RequestBody LoginInput input) {
+    public ResponseEntity<AuthResponse> partnerLogin(@RequestBody LoginInput input) {
         PartnerEntity loginPartner = authService.authenticatePartner(input);
-
         String token = tokenProvider.generateToken(loginPartner.getUsername(), new ArrayList<>(Collections.singletonList(loginPartner.getMemberType())));
 
         log.info("[LOGIN] ID={}, ROLE={}", loginPartner.getPartnerId(), loginPartner.getMemberType());
 
         return ResponseEntity.ok(new AuthResponse(loginPartner.getPartnerId(), token));
     }
-
-
 }
