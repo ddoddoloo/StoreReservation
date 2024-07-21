@@ -13,19 +13,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-
 public class MakeReservation {
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Request{
+    public static class Request {
         private String userId;
         private String storeName;
         private Integer people;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         private LocalDate date;
+
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
         private LocalTime time;
     }
@@ -34,21 +35,20 @@ public class MakeReservation {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String userId;
         private String phone;
         private String storeName;
-
         private Integer people;
 
         @Enumerated(EnumType.STRING)
         private ReservationStatus status;
         private LocalDateTime statusUpdatedAt;
 
-
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime time;
 
-        public static Response fromDto(ReservationDto reservationDto){
+        public static Response fromDto(ReservationDto reservationDto) {
             return Response.builder()
                     .userId(reservationDto.getUserId())
                     .phone(reservationDto.getPhone())
@@ -59,6 +59,5 @@ public class MakeReservation {
                     .time(reservationDto.getTime())
                     .build();
         }
-
     }
 }
