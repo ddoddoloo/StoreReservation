@@ -40,19 +40,24 @@ public enum ReservationStatus {
      */
     T_E_S_T;
 
-    public static ReservationStatus of(String status){
-        status = status.toUpperCase();
-
-        if(!StringUtils.hasText(status)){
+    /**
+     * 주어진 문자열을 기반으로 ReservationStatus를 반환합니다.
+     * @param status 예약 상태 문자열
+     * @return 해당 문자열에 해당하는 ReservationStatus
+     * @throws MyException 예약 상태 코드가 없거나 유효하지 않을 경우 예외 발생
+     */
+    public static ReservationStatus of(String status) {
+        if (!StringUtils.hasText(status)) {
             throw new MyException(ErrorCode.RESERVATION_STATUS_CODE_REQUIRED);
         }
-        for(ReservationStatus rs : ReservationStatus.values()){
-            if(rs.toString().equals(status)){
+
+        String upperCaseStatus = status.toUpperCase();
+        for (ReservationStatus rs : ReservationStatus.values()) {
+            if (rs.name().equals(upperCaseStatus)) {
                 return rs;
             }
         }
 
         throw new MyException(ErrorCode.RESERVATION_STATUS_CODE_ILLEGAL_ARGUMENT);
-
     }
 }
