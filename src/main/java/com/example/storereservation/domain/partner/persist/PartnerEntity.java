@@ -13,8 +13,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @ToString
 @Entity(name = "PARTNER")
@@ -23,28 +23,24 @@ public class PartnerEntity implements UserDetails {
     @Id
     private String partnerId;
     private String password;
-
     private String partnerName;
     private String phone;
-
     private Long storeId;
     private String storeName;
-
-    private String memberType; //ROLE_PARTNER
-
+    private String memberType; // ROLE_PARTNER
     private LocalDateTime createAt;
     private LocalDateTime updateDt;
 
-    public void setStore(Long storeId, String storeName){
+    public void setStore(Long storeId, String storeName) {
         this.storeId = storeId;
         this.storeName = storeName;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_PARTNER"));
-        return grantedAuthorities;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(memberType));
+        return authorities;
     }
 
     @Override
@@ -54,21 +50,21 @@ public class PartnerEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
