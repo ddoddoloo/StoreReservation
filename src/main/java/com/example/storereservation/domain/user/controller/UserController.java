@@ -20,10 +20,12 @@ public class UserController {
 
     /**
      * 유저 회원가입
+     * @param request 회원가입 요청 정보
+     * @return 회원가입된 유저 정보
      */
     @ApiOperation("유저 회원가입")
     @PostMapping("/user/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegisterUser.Request request) {
+    public ResponseEntity<RegisterUser.Response> registerUser(@RequestBody RegisterUser.Request request) {
         UserDto registeredUser = userService.register(request);
         return ResponseEntity.ok(RegisterUser.Response.fromDto(registeredUser));
     }
