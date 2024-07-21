@@ -9,18 +9,17 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
 public class AddReview {
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Request{
+    public static class Request {
         private double rating;
         private String text;
 
-        public static ReviewEntity toEntity(Request request, ReservationEntity reservation){
+        public static ReviewEntity toEntity(Request request, ReservationEntity reservation) {
             return ReviewEntity.builder()
                     .reservationId(reservation.getId())
                     .userId(reservation.getUserId())
@@ -36,14 +35,14 @@ public class AddReview {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String userId;
         private String storeName;
         private double rating;
         private String text;
         private LocalDateTime createdAt;
 
-        public static Response fromDto(ReviewDto review){
+        public static Response fromDto(ReviewDto review) {
             return Response.builder()
                     .userId(review.getUserId())
                     .storeName(review.getStoreName())
