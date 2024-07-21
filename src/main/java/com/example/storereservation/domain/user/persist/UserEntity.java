@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
-@Getter@Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -24,12 +24,9 @@ public class UserEntity implements UserDetails {
     @Id
     private String userId;
     private String password;
-
     private String name;
     private String phone;
-
-    private String memberType; //ROLE_USER
-
+    private String memberType; // ROLE_USER
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 
@@ -42,27 +39,26 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-
         return this.userId;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
