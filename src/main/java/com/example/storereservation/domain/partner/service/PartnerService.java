@@ -22,30 +22,27 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class  PartnerService{
+public class PartnerService {
 
     private final PartnerRepository partnerRepository;
     private final StoreRepository storeRepository;
 
-    public PartnerDto register(RegisterPartner.Request request){
-        if(!PasswordUtils.validatePlainTextPassword(
-                request.getPassword(), request.getPasswordCheck())){
-            throw new MyException(ErrorCode.PASSWORD_CHECK_INCORRECT);
-        }
+    /**
+     * 파트너 회원가입
+     */
+    public PartnerDto register(RegisterPartner.Request request) {
+        validatePasswords(request.getPassword(), request.getPasswordCheck());
 
-        if(partnerRepository.existsByPartnerId(request.getPartnerId())){
+        if (partnerRepository.existsByPartnerId(request.getPartnerId())) {
             throw new MyException(ErrorCode.DUPLICATED_ID);
         }
 
         request.setPassword(PasswordUtils.encPassword(request.getPassword()));
-
-        PartnerEntity savedManager = partnerRepository.save(
-                RegisterPartner.Request.toEntity(request));
+        PartnerEntity savedManager = partnerRepository.save(RegisterPartner.Request.toEntity(request));
         log.info("Manager register complete : {}", savedManager);
 
         return PartnerDto.fromEntity(savedManager);
     }
-
 
     /**
      * 매장 추가하기
@@ -55,52 +52,59 @@ public class  PartnerService{
      * -> STORE_NAME_ALREADY_EXISTS : 해당 매장명이 이미 존재하는지 확인
      * 3. 해당 파트너 엔티티에 storeId, storeName 저장
      */
-    public StoreDto addStore(String partnerId, AddStore.Request request){
+    public StoreDto addStore(String partnerId, AddStore.Request request) {
         PartnerEntity partner = partnerRepository.findByPartnerId(partnerId)
                 .orElseThrow(() -> new MyException(ErrorCode.PARTNER_NOT_FOUND));
 
-        this.requestValidate(partnerId, request.getStoreName());
+        validateAddStoreRequest(partnerId, request.getStoreName());
 
-        StoreEntity savedStore = storeRepository.save(
-                AddStore.Request.toEntity(request, partnerId)
-        );
-
+        StoreEntity savedStore = storeRepository.save(AddStore.Request.toEntity(request, partnerId));
         partner.setStore(savedStore.getId(), savedStore.getStoreName());
         partnerRepository.save(partner);
 
         return StoreDto.fromEntity(savedStore);
     }
 
-    private void requestValidate(String partnerId, String storeName){
-        if(storeRepository.existsByPartnerId(partnerId)){
-            throw new MyException(ErrorCode.PARTNER_ALREADY_HAS_STORE);
-        }else if(storeRepository.existsByStoreName(storeName)){
-            throw new MyException(ErrorCode.STORE_NAME_ALREADY_EXISTS);
-        }
-    }
-
     /**
      * 매장 정보 수정
-     * @param request
-     * @return
      */
-    public StoreDto editStore(String partnerId, EditStore.Request request){
-        if(!partnerRepository.existsByPartnerId(partnerId)){
+    public StoreDto editStore(String partnerId, EditStore.Request request) {
+        if (!partnerRepository.existsByPartnerId(partnerId)) {
             throw new MyException(ErrorCode.PARTNER_NOT_FOUND);
         }
 
         StoreEntity store = storeRepository.findByPartnerId(partnerId)
                 .orElseThrow(() -> new MyException(ErrorCode.STORE_NOT_FOUND));
 
-        if(!store.getStoreName().equals(request.getStoreName())
-                && storeRepository.existsByStoreName(request.getStoreName())){
+        if (!store.getStoreName().equals(request.getStoreName())
+                && storeRepository.existsByStoreName(request.getStoreName())) {
             throw new MyException(ErrorCode.STORE_NAME_ALREADY_EXISTS);
         }
 
         store.edit(request);
+        StoreEntity updatedStore = storeRepository.save(store);
 
-        StoreEntity updated = storeRepository.save(store);
+        return StoreDto.fromEntity(updatedStore);
+    }
 
-        return StoreDto.fromEntity(updated);
+    /**
+     * 비밀번호 검증
+     */
+    private void validatePasswords(String password, String passwordCheck) {
+        if (!PasswordUtils.validatePlainTextPassword(password, passwordCheck)) {
+            throw new MyException(ErrorCode.PASSWORD_CHECK_INCORRECT);
+        }
+    }
+
+    /**
+     * 매장 추가 요청 검증
+     */
+    private void validateAddStoreRequest(String partnerId, String storeName) {
+        if (storeRepository.existsByPartnerId(partnerId)) {
+            throw new MyException(ErrorCode.PARTNER_ALREADY_HAS_STORE);
+        }
+        if (storeRepository.existsByStoreName(storeName)) {
+            throw new MyException(ErrorCode.STORE_NAME_ALREADY_EXISTS);
+        }
     }
 }
