@@ -23,7 +23,9 @@ public class AuthService implements UserDetailsService {
     private final PartnerRepository partnerRepository;
 
     /**
-     * User auth
+     * 사용자 인증
+     * @param input 로그인 입력 정보
+     * @return 인증된 사용자 엔티티
      */
     public UserEntity authenticateUser(LoginInput input) {
         UserEntity user = userRepository.findByUserId(input.getUsername())
@@ -35,7 +37,9 @@ public class AuthService implements UserDetailsService {
     }
 
     /**
-     * Partner auth
+     * 파트너 인증
+     * @param input 로그인 입력 정보
+     * @return 인증된 파트너 엔티티
      */
     public PartnerEntity authenticatePartner(LoginInput input) {
         PartnerEntity partner = partnerRepository.findByPartnerId(input.getUsername())
@@ -57,7 +61,6 @@ public class AuthService implements UserDetailsService {
                     .orElseThrow(() -> new MyException(ErrorCode.PARTNER_NOT_FOUND));
         }
         log.error("AuthService -> loadUserByUsername FAILED");
-        return null;
+        throw new MyException(ErrorCode.USER_NOT_FOUND);
     }
-
 }
