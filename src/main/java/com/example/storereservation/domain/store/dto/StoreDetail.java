@@ -16,7 +16,7 @@ public class StoreDetail {
     private String rating;
     private Long count;
 
-    public static StoreDetail fromEntity(StoreEntity store){
+    public static StoreDetail fromEntity(StoreEntity store) {
         return StoreDetail.builder()
                 .storeName(store.getStoreName())
                 .storeAddr(store.getStoreAddr())
@@ -26,12 +26,12 @@ public class StoreDetail {
                 .build();
     }
 
-    public static StoreDetail fromDto(StoreDto store){
+    public static StoreDetail fromDto(StoreDto store) {
         return StoreDetail.builder()
                 .storeName(store.getStoreName())
                 .storeAddr(store.getStoreAddr())
                 .text(store.getText())
-                .distance(String.format("%.3fkm",store.getDistance()))
+                .distance(String.format("%.3fkm", store.getDistance()))
                 .rating(String.format("%.2f", store.getRating()))
                 .count(store.getRatingCount())
                 .build();

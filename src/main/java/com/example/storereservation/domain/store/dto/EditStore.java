@@ -7,41 +7,35 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
 public class EditStore {
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Request{
+    public static class Request {
         private String storeName;
         private String storeAddr;
         private String text;
-
         private double lat;
         private double lnt;
-
     }
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String partnerId;
-
         private String storeName;
         private String storeAddr;
         private String text;
-
         private double lat;
         private double lnt;
-
         private LocalDateTime createAt;
         private LocalDateTime updateAt;
 
-        public static Response fromDto(StoreDto storeDto){
+        public static Response fromDto(StoreDto storeDto) {
             return Response.builder()
                     .partnerId(storeDto.getPartnerId())
                     .storeName(storeDto.getStoreName())
@@ -54,5 +48,4 @@ public class EditStore {
                     .build();
         }
     }
-
 }

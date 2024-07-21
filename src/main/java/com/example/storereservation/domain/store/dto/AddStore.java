@@ -8,22 +8,20 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
 public class AddStore {
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Request{
+    public static class Request {
         private String storeName;
         private String storeAddr;
         private String text;
-
         private double lat;
         private double lnt;
 
-        public static StoreEntity toEntity(Request request, String partnerId){
+        public static StoreEntity toEntity(Request request, String partnerId) {
             return StoreEntity.builder()
                     .partnerId(partnerId)
                     .storeName(request.getStoreName())
@@ -42,15 +40,14 @@ public class AddStore {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         private String partnerId;
-
         private String storeName;
         private String storeAddr;
         private String text;
         private LocalDateTime createAt;
 
-        public static Response fromDto(StoreDto storeDto){
+        public static Response fromDto(StoreDto storeDto) {
             return Response.builder()
                     .partnerId(storeDto.getPartnerId())
                     .storeName(storeDto.getStoreName())
@@ -60,5 +57,4 @@ public class AddStore {
                     .build();
         }
     }
-
 }
