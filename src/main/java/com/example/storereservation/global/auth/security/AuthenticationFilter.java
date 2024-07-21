@@ -28,12 +28,12 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = resolveTokenFromRequest(request.getHeader(TOKEN_HEADER));
 
-        //토큰 유효성 검증
+        // 토큰 유효성 검증
         if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
             Authentication auth = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
-        }else{
-            log.info("토큰 유효성 검증 실패!!!!!");
+        } else {
+            log.info("토큰 유효성 검증 실패");
         }
         filterChain.doFilter(request, response);
     }
